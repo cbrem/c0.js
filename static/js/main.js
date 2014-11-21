@@ -45,7 +45,7 @@ function _onCommand(cmd, term) {
 // Sets up the app.
 function _onReady() {
   // Set up jQuery terminal.
-  $('body').terminal(_onCommand, {
+  $('#term').terminal(_onCommand, {
     prompt: '--> ',
     greetings: 'Welcome to c0.js!\n'
   });
