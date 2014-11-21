@@ -8,16 +8,18 @@
 	startSession, etc.)
 */
 
-function Session() { }
+function Session(code) {
+	this.code = code;
+}
 Session.prototype = {
 	// Creates a new session, and calls the success or failure callbacks as
 	// appropriate.
 	start: function(succ, fail) {
+		var url = "/start" + (this.code ? "/" + encodeURIComponent(this.code) : "");
 		$.ajax({
 		    type: "POST",
-		    url: "/start",
+		    url: url,
 		    success: function(data) {
-		    	console.log("sessionID", data, data.sessionID);
 		    	this.sessionID = data.sessionID;
 		    	succ && succ();
 		    }.bind(this),

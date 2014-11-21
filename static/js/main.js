@@ -11,16 +11,16 @@
     * upload
 */
 
-// Run the code currently in the editor in a fresh session.
-/*
-TODO: for this to work, we need to be able to provide a source file when we
-start the session
-
+// Clear the terminal, and run the code currently in the editor in a fresh
+// session.
 function run() {
-  _session = new Session();
+  _term.clear();
+  _term.echo(GREETING);
+
+  _session = new Session(_editor.getValue());
   _session.start();
 }
-*/
+
 
 // Process a command typed into the terminal.
 // Send the command to the current session.
@@ -44,9 +44,9 @@ function _onCommand(cmd, term) {
 // Sets up the app.
 function _onReady() {
   // Set up jQuery terminal.
-  $('#term').terminal(_onCommand, {
+  _term = $('#term').terminal(_onCommand, {
     prompt: '--> ',
-    greetings: 'Welcome to c0.js!\n'
+    greetings: GREETING
   });
 
   // Set up editor.
@@ -71,7 +71,10 @@ function _onUnload() {
 // Globals.
 var _session = null;
 var _editor = null;
-var DEFAULT_CODE = 'int main() {\n\treturn 0;\n}'
+var _term = null;
+var DEFAULT_CODE = 'int main() {\n\treturn 0;\n}';
+var GREETING = 'Welcome to c0.js!\n';
+var RUN_GREETING = 'Thanks for the code!\n';
 
 // Event handlers.
 $(document).ready(_onReady);

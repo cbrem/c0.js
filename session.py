@@ -16,10 +16,19 @@ WAITING_CHARS = '... '
 FINISHED_CHARS = '\n--> '
 
 class Session(object):
-	def __init__(self, sessionID):
+	def __init__(self, sessionID, code):
 		self.sessionID = sessionID
+		self.code = code
+
+		# Create a temporary file containing the given code.
+		filename = "tmp/%d.c0" % sessionID
+		with open(filename, "w") as f:
+			f.write(code)
+
+		# Start the underlying coin process.
+		cmd = 'coin %s' % filename
 		self.process = subprocess.Popen(
-			'coin',
+			cmd,
 			shell=True,
 			stdin=subprocess.PIPE,
 			stdout=subprocess.PIPE,

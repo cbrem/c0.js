@@ -10,33 +10,34 @@ nextSessionID = 0
 sessions = {}
 
 @bottle.post(urls.start)
-def start():
+@bottle.post(urls.start + '/<code>')
+def start(code = ''):
 	global nextSessionID
 	global sessions
-	sessions[nextSessionID] = session.Session(nextSessionID)
+	sessions[nextSessionID] = session.Session(nextSessionID, code)
 	nextSessionID += 1
 
 	# Return the old sessionID.
 	return {"sessionID": nextSessionID - 1}
 
-@bottle.post(urls.cmd + '/<sessionID>/<cmd>')
+@bottle.post(urls.cmd + '/<sessionID:int>/<cmd>')
 def cmd(sessionID, cmd):
 	try:
-		session = sessions[int(sessionID)]
+		session = sessions[sessionID]
 	except:
 		# TODO: should we react differently here?
-		return
+		return bottle.HTTPError(404, "Invalid session ID.")
 
 	return session.cmd(cmd)
 
-@bottle.post(urls.end + '/<sessionID>')
+@bottle.post(urls.end + '/<sessionID:int>')
 def end(sessionID):
 	global sessions
 	try:
-		session = sessions[int(sessionID)]
+		session = sessions[sessionID]
 	except:
 		# TODO: should we do something different here?
-		return
+		return bottle.HTTPError(404, "Invalid session ID.")
 
 	session.end()
 	del sessions[sessionID]
