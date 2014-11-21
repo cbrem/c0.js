@@ -12,8 +12,8 @@
 
 import subprocess
 
-WAITING_CHARS = '...'
-FINISHED_CHARS = '\n-->'
+WAITING_CHARS = '... '
+FINISHED_CHARS = '\n--> '
 
 class Session(object):
 	def __init__(self, sessionID):
