@@ -22,7 +22,6 @@ function run() {
 }
 */
 
-
 // Process a command typed into the terminal.
 // Send the command to the current session.
 function _onCommand(cmd, term) {
@@ -50,11 +49,15 @@ function _onReady() {
     greetings: 'Welcome to c0.js!\n'
   });
 
+  // Set up editor.
+  _editor = ace.edit('editor');
+  _editor.setTheme("ace/theme/twilight");
+  _editor.getSession().setMode("ace/mode/c_cpp");
+  _editor.setValue(DEFAULT_CODE);
+
   // Start an initial session.
   _session = new Session();
   _session.start();
-
-  // TODO: set up editor?
 }
 
 // Kills the current session (if any) when we leave the page.
@@ -67,6 +70,8 @@ function _onUnload() {
 
 // Globals.
 var _session = null;
+var _editor = null;
+var DEFAULT_CODE = 'int main() {\n\treturn 0;\n}'
 
 // Event handlers.
 $(document).ready(_onReady);
