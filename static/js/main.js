@@ -1,14 +1,5 @@
 /*
-  TODO:
-  * Figure out how to load a C0 file when the interpreter starts.
-  * add foundation stuff
-*/
-
-/*
-  TODO: interface methods:
-    * run
-    * download
-    * upload
+  Main JS file.
 */
 
 // Clear the terminal, and run the code currently in the editor in a fresh

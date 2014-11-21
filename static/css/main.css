@@ -6,6 +6,10 @@ p {
 	font-family: courier;
 }
 
+#run-button {
+	margin-top: 1.5rem;
+}
+
 #term {
 	height: 40rem;
 }
