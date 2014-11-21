@@ -33,9 +33,10 @@ function _onCommand(cmd, term) {
 
   // TODO: fail callback?
   _session.cmd(cmd, function(res) {
-    if (res.err) {
-      term.error(res.err);
+    if (res.out_waiting) {
+      term.set_prompt('... ');
     } else if (res.out) {
+      term.set_prompt('--> ');
       term.echo(res.out);
     }
   }, undefined);

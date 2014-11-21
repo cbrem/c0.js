@@ -6,9 +6,14 @@
 	* how do we handle multi-line output?
 	* how do we handle incomplete lines? i.e. the user sends what they think
 	  is a complete line, but C0 expects more?
+	* use threading to handle multiple requests simultaneously?
+	* todo: treat stderr seperately?
 """
 
 import subprocess
+
+WAITING_CHARS = '...'
+FINISHED_CHARS = '\n-->'
 
 class Session(object):
 	def __init__(self, sessionID):
@@ -29,16 +34,20 @@ class Session(object):
 	def cmd(self, line):
 		self.process.stdin.write(line + "\n")
 
-		# TODO: This is currently broken, because we pipe err to out
-		# when we create the process. Is there some way to take the
-		# output that comes from stderr?
-		out = self.process.stdout.readline()
-		err = ''
-
-		# Strip the leading '->', as well as leading/trailing whitespace.
-		# TODO: is this too aggressive?
-		toStrip = '-> \n'
-		return (out.strip(toStrip), err.strip(toStrip))
+		# TODO: this may need some work. How can we be sure that
+		# the user hasn't just put '...' in a string?
+		res = {}
+		out = ''
+		while True:
+			if out.endswith(FINISHED_CHARS):
+				res['out'] = out.strip(FINISHED_CHARS)
+				break
+			elif out.endswith(WAITING_CHARS):
+				res['out_waiting'] = True
+				break
+			else:
+				out += self.process.stdout.read(1)
+		return res
 
 	# Ends a session.
 	def end(self):

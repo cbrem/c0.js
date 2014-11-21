@@ -27,8 +27,7 @@ def cmd(sessionID, cmd):
 		# TODO: should we react differently here?
 		return
 
-	(out, err) = session.cmd(cmd)
-	return {"out": out, "err": err}
+	return session.cmd(cmd)
 
 @bottle.post(urls.end + '/<sessionID>')
 def end(sessionID):
